@@ -8,14 +8,9 @@ import {
   FileText, 
   Volume2, 
   VolumeX, 
-  Cpu, 
   Layers,
   UserCheck,
-  MapPin,
   Compass,
-  Heart,
-  Sliders,
-  User,
   Settings,
   X
 } from 'lucide-react';
@@ -58,7 +53,7 @@ interface DiscoveredPeer {
 
 const ChatP2PApp: React.FC = () => {
   // Modes: 'split' (User A & User B side-by-side) or 'tab' (Connected to another tab)
-  const [chatMode, setChatMode] = useState<'split' | 'tab'>('tab');
+  const chatMode = 'tab';
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [logs, setLogs] = useState<ConsoleLog[]>([]);
 
@@ -346,22 +341,6 @@ const ChatP2PApp: React.FC = () => {
       }]);
     } catch (err: any) {
       addLog('error', `Lỗi kết nối WebRTC: ${err.message}`);
-    }
-  };
-
-  const syncStateToOtherTabs = (extra = {}) => {
-    if (broadcastChannel.current) {
-      broadcastChannel.current.postMessage({
-        type: 'SYNC_STATE',
-        senderId: localTabId.current,
-        senderPeerId: localPeerId.current,
-        isTabConnected: isTabConnectedRef.current,
-        joinedRoom: joinedRoomRef.current,
-        connectedPeerId: connectedPeerIdRef.current,
-        tabMessages: tabMessages,
-        isMatching: isMatchingRef.current,
-        ...extra
-      });
     }
   };
 
@@ -2154,71 +2133,6 @@ const ChatP2PApp: React.FC = () => {
 // SUB-COMPONENTS
 // ---------------------------------------------------------------------------
 
-// Single Chat Panel abstraction for Split Mode
-interface ChatPanelProps {
-  title: string;
-  placeholder: string;
-  messages: ChatMessage[];
-  isTyping: boolean;
-  onSend: (text: string) => void;
-  onTyping: () => void;
-  onSendFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  activeReactionMsgId: string | null;
-  setActiveReactionMsgId: (id: string | null) => void;
-  onReact: (msgId: string, emoji: string) => void;
-  chatEndRef: React.RefObject<HTMLDivElement | null>;
-}
-
-const ChatPanel: React.FC<ChatPanelProps> = ({
-  title,
-  placeholder,
-  messages,
-  isTyping,
-  onSend,
-  onTyping,
-  onSendFile,
-  activeReactionMsgId,
-  setActiveReactionMsgId,
-  onReact,
-  chatEndRef
-}) => {
-  return (
-    <div className="chat-panel-view">
-      <div className="chat-panel-header">
-        <div className="peer-profile-header">
-          <div className="user-avatar">
-            <span>U</span>
-          </div>
-          <div>
-            <div className="peer-name">{title}</div>
-            <div className="peer-status-text">WebRTC DataChannel</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="chat-messages-area">
-        {messages.map(msg => (
-          <MessageBubble
-            key={msg.id}
-            msg={msg}
-            activeReactionMsgId={activeReactionMsgId}
-            setActiveReactionMsgId={setActiveReactionMsgId}
-            onReact={(emoji) => onReact(msg.id, emoji)}
-          />
-        ))}
-        {isTyping && <TypingIndicator />}
-        <div ref={chatEndRef} />
-      </div>
-
-      <ChatInputBar
-        placeholder={placeholder}
-        onSend={onSend}
-        onTyping={onTyping}
-        onSendFile={onSendFile}
-      />
-    </div>
-  );
-};
 
 // Message bubble styling with support for Reactions & Files
 interface MessageBubbleProps {
