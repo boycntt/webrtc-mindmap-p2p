@@ -53,7 +53,7 @@ interface DiscoveredPeer {
 
 const ChatP2PApp: React.FC = () => {
   // Modes: 'split' (User A & User B side-by-side) or 'tab' (Connected to another tab)
-  const chatMode = 'tab';
+  const chatMode: 'tab' | 'split' = 'tab';
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [logs, setLogs] = useState<ConsoleLog[]>([]);
 
