@@ -228,7 +228,7 @@ const ChatP2PApp: React.FC = () => {
       
       osc.start();
       osc.stop(audioCtx.currentTime + 0.12);
-    } catch (e) {
+    } catch (_e) {
       console.warn("Audio Context beep block by browser sandbox rules.");
     }
   };

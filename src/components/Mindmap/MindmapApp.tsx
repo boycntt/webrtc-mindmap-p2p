@@ -393,7 +393,7 @@ const MindmapApp: React.FC = () => {
           setNodes(parsed);
           setSelectedNodeId(null);
         }
-      } catch (err) {
+      } catch (_err) {
         alert('Định dạng file JSON không hợp lệ!');
       }
     };
