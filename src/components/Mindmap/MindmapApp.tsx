@@ -83,6 +83,7 @@ const MindmapApp: React.FC = () => {
     if (e.target === viewportRef.current || (e.target as HTMLElement).classList.contains('mindmap-canvas')) {
       setIsDraggingCanvas(true);
       dragStart.current = { x: e.clientX - pan.x, y: e.clientY - pan.y };
+      setSelectedNodeId(null); // Clear selection and hide popover toolbar
     }
   };
 
